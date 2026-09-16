@@ -1,7 +1,7 @@
 import { track as vercelTrack } from "@vercel/analytics";
 
 type Events = {
-  cta_book: { location: "nav" | "hero" | "services" | "process" | "contact" | "pricing" | "menu" };
+  cta_book: { location: "nav" | "hero" | "services" | "process" | "contact" | "pricing" | "menu" | "footer" };
   cta_see_services: Record<string, never>;
   form_start: Record<string, never>;
   hero_complete: Record<string, never>;

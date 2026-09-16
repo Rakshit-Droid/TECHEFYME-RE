@@ -36,8 +36,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={inter.variable} suppressHydrationWarning>
       <head>
-        <script dangerouslySetInnerHTML={{ __html: INTRO_HEAD_SCRIPT }} />
-        <script dangerouslySetInnerHTML={{ __html: HEAD_SCRIPT }} />
+        {/* Pre-paint, so a single inline script. Browser extensions often put their own
+            <script> at the top of <head> before React hydrates, and React then pairs this
+            element with theirs. Its content is a constant, so any mismatch here is foreign
+            and harmless: the script has already run. */}
+        <script suppressHydrationWarning dangerouslySetInnerHTML={{ __html: `${INTRO_HEAD_SCRIPT};${HEAD_SCRIPT}` }} />
       </head>
       <body className="relative">
         <Intro />

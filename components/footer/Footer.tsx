@@ -1,81 +1,109 @@
 import Link from "next/link";
+import { Button } from "@/components/ui/Button";
 import { Container } from "@/components/ui/Container";
-import { Logo } from "@/components/ui/Logo";
-import { footer, site } from "@/content/site";
+import { BOOKING_URL, contact, footer, hero, nav, site } from "@/content/site";
 
-const linkCls = "inline-flex min-h-11 items-center transition-colors duration-150 hover:text-muted";
+const external = { target: "_blank", rel: "noopener noreferrer" } as const;
 
+/** Every way to reach the studio that is not the email, in one spaced row. */
+const channels = [
+  ...site.social.map((s) => ({ label: s.label, href: s.href, newTab: true })),
+  { label: "WhatsApp", href: site.whatsappHref, newTab: true },
+  { label: "Call Us", href: site.phoneHref, newTab: false },
+];
+
+/**
+ * The footer as a closing card: the address and the next step up top, the channels on
+ * a hairline, the name set as large as the card allows, and the fine print underneath.
+ * The glow rises from the bottom edge, so the top half stays quiet for reading.
+ */
 export function Footer() {
   return (
-    <footer data-theme="dark" className="bg-bg pb-12 text-ink">
+    <footer data-theme="dark" className="footer bg-bg pb-5 text-ink md:pb-8">
       <Container>
-        <div className="grid grid-cols-12 gap-x-4 gap-y-12 border-t border-line pt-12 md:gap-x-6">
-          <div className="col-span-12 lg:col-span-4">
-            <Link href="/" aria-label={site.shortName}>
-              <Logo size={24} id="tm-footer" />
-            </Link>
-            <p className="text-support mt-4 max-w-[44ch] text-muted">{site.description}</p>
-            <p className="eyebrow mt-6 text-faint">{site.regionsShort}</p>
+        <div className="footer-card" data-reveal="statement">
+          <div aria-hidden="true" className="footer-glow" />
+
+          <div className="relative grid gap-10 lg:grid-cols-[1fr_auto] lg:gap-16" data-reveal-item>
+            <div>
+              <p className="text-support text-muted">{site.regionsShort}</p>
+              <a
+                href={`mailto:${site.email}`}
+                className="footer-email mt-3 inline-block font-normal tracking-[-0.03em] transition-opacity duration-150 hover:opacity-70"
+              >
+                {site.email}
+              </a>
+              <nav aria-label="Footer" className="mt-8">
+                <ul className="flex flex-wrap gap-x-9 gap-y-1">
+                  {footer.navigate.map((l) => (
+                    <li key={l.label}>
+                      <Link
+                        href={l.href}
+                        className="text-support inline-flex min-h-11 items-center text-muted transition-colors duration-150 hover:text-ink"
+                      >
+                        {l.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            </div>
+
+            <div className="max-w-[17rem]">
+              <p className="text-[1.0625rem] font-medium leading-snug tracking-[-0.01em]">{hero.title}</p>
+              <p className="text-support mt-2 text-muted">{contact.form.promise}</p>
+              <Button href={BOOKING_URL} className="mt-5" track="cta_book" trackLocation="footer">
+                {nav.cta}
+              </Button>
+            </div>
           </div>
 
-          <nav aria-label="Footer" className="col-span-6 md:col-span-3 lg:col-span-2 lg:col-start-5">
-            <p className="eyebrow text-faint">Navigate</p>
-            <ul className="text-support mt-4">
-              {footer.navigate.map((l) => (
-                <li key={l.label}>
-                  <Link href={l.href} className={linkCls}>
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div className="col-span-6 md:col-span-3 lg:col-span-2">
-            <p className="eyebrow text-faint">Reach us</p>
-            <ul className="text-support mt-4">
-              {footer.reach.map((l) => (
-                <li key={l.label}>
+          <div className="relative mt-20 md:mt-28 lg:mt-36" data-reveal-item>
+            <ul className="grid grid-cols-2 gap-x-6 gap-y-1 sm:flex sm:justify-between">
+              {channels.map((c) => (
+                <li key={c.label}>
                   <a
-                    href={l.href}
-                    className={linkCls}
-                    {...(l.href.startsWith("http") ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+                    href={c.href}
+                    className="inline-flex min-h-11 items-center text-[0.9375rem] font-medium transition-opacity duration-150 hover:opacity-70 md:text-[1.0625rem]"
+                    {...(c.newTab ? external : {})}
                   >
-                    {l.label}
+                    {c.label}
                   </a>
                 </li>
               ))}
             </ul>
+            <div className="mt-4 h-px bg-white/20" />
           </div>
 
-          <div className="col-span-6 md:col-span-3 lg:col-span-2">
-            <p className="eyebrow text-faint">Social</p>
-            <ul className="text-support mt-4">
-              {site.social.map((l) => (
-                <li key={l.label}>
-                  <a href={l.href} target="_blank" rel="noopener noreferrer" className={linkCls}>
-                    {l.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Set in SVG so the name fills the card's width exactly at every size. The font
+              size is chosen so Inter's natural width is already the full 1000 units;
+              textLength only takes up the slack if a fallback face is showing. */}
+          <svg
+            aria-hidden="true"
+            className="footer-wordmark relative mt-6 block w-full md:mt-8"
+            viewBox="0 0 1000 127"
+            data-reveal-item
+          >
+            <text x="0" y="127" textLength="1000" lengthAdjust="spacingAndGlyphs" fill="currentColor">
+              TECHEFYME
+            </text>
+          </svg>
 
-          <nav aria-label="Legal" className="col-span-6 md:col-span-3 lg:col-span-2">
-            <p className="eyebrow text-faint">Legal</p>
-            <ul className="text-support mt-4">
-              {footer.legal.map((l) => (
-                <li key={l.label}>
-                  <Link href={l.href} className={linkCls}>
-                    {l.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </nav>
+          <div className="text-support relative mt-6 flex flex-col gap-3 text-white/75 md:mt-8 lg:flex-row lg:items-center lg:justify-between">
+            <p>{footer.copyright}</p>
+            <nav aria-label="Legal">
+              <ul className="flex flex-wrap gap-x-6 gap-y-1">
+                {footer.legal.map((l) => (
+                  <li key={l.label}>
+                    <Link href={l.href} className="inline-flex min-h-11 items-center transition-colors duration-150 hover:text-white">
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          </div>
         </div>
-
-        <p className="text-support mt-16 border-t border-line pt-6 text-muted">{footer.copyright}</p>
       </Container>
     </footer>
   );

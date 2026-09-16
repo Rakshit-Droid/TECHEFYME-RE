@@ -464,6 +464,83 @@
   }
 
   /* ----------------------------------------------------------------
+     Footer card. Dark on top for reading; light rises from the bottom
+     edge behind the name, then sinks back so the fine print sits on deep
+     indigo rather than on the bright part of the glow.
+  ----------------------------------------------------------------- */
+  .footer-card {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    border: 1px solid rgb(255 255 255 / 0.14);
+    border-radius: 20px;
+    background: #09090b;
+    padding: 1.75rem 1.25rem 0.75rem;
+  }
+
+  @media (min-width: 768px) {
+    .footer-card {
+      border-radius: var(--radius-panel);
+      padding: 3rem 3rem 1.25rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer-card {
+      padding: 3.5rem 4rem 1.5rem;
+    }
+  }
+
+  /* Anchored to the card's bottom edge at a fixed height, so the light sits behind
+     the name on a short desktop card and a tall phone card alike. The first layer
+     darkens the strip the fine print sits on. */
+  .footer-glow {
+    --fine: 8rem;
+    position: absolute;
+    inset: auto 0 0;
+    z-index: -1;
+    height: 34rem;
+    pointer-events: none;
+    background:
+      linear-gradient(to top, rgb(9 8 34 / 0.78), rgb(9 8 34 / 0.35) var(--fine), transparent calc(var(--fine) * 1.8)),
+      radial-gradient(30% 20% at 52% 90%, rgb(248 240 255 / 0.95), rgb(221 190 255 / 0.5) 42%, transparent 80%),
+      radial-gradient(42% 62% at 34% 80%, rgb(147 92 255), rgb(112 48 232 / 0.7) 42%, transparent 78%),
+      radial-gradient(58% 66% at 88% 84%, rgb(20 110 255), rgb(29 78 216 / 0.65) 46%, transparent 80%),
+      linear-gradient(to bottom, transparent, rgb(36 30 150 / 0.6) 42%, rgb(30 24 120 / 0.85));
+  }
+
+  @media (min-width: 768px) {
+    .footer-glow {
+      --fine: 6rem;
+      height: 30rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .footer-glow {
+      --fine: 3.5rem;
+      height: 27rem;
+    }
+  }
+
+  .footer-email {
+    font-size: clamp(1.625rem, 3.6vw, 3.25rem);
+    line-height: 1.1;
+    overflow-wrap: anywhere;
+  }
+
+  .footer-wordmark {
+    overflow: visible;
+  }
+
+  .footer-wordmark text {
+    font-family: var(--font-sans);
+    font-size: 174.6px; /* cap height 127, the viewBox height */
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+
+  /* ----------------------------------------------------------------
      Services reel (desktop sticky stack) and process index
   ----------------------------------------------------------------- */
   .reel-item {
