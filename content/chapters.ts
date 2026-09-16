@@ -2,6 +2,8 @@ export const process = {
   eyebrow: "02 · Process",
   title: "How we actually ship.",
   lead: "Four phases, zero ambiguity. Every week has a deliverable. Every deliverable has a metric attached.",
+  /** New label, approved by the client: the fifth point on the process ring. */
+  callLabel: "Discovery call",
   phases: [
     {
       number: "01",
@@ -78,11 +80,17 @@ export const proof = {
   eyebrow: "04 · Proof",
   title: "Teams that kept us on after launch.",
   more: "+ 40 more engagements across six regions",
+  /**
+   * `service` is our reading of which service each quote is about, and `highlight` is the
+   * result phrase lifted, word for word, from the quote itself.
+   */
   testimonials: [
     {
       quote:
         "The rebuild moved our trial-to-paid from 7.4% to 11.8% in six weeks. No marketing spend changed. The landing just finally matches what we actually do.",
       name: "Marisol Abenoja",
+      service: "web-design",
+      highlight: "trial-to-paid from 7.4% to 11.8%",
       role: "Head of Growth",
       company: "Nordhaven Supply Co.",
     },
@@ -90,6 +98,8 @@ export const proof = {
       quote:
         "They ripped out five Make scenarios, rebuilt them as one agent in n8n, and cut our ops cost by $1,800 a month. Shipped in four days.",
       name: "Ewan Tomlin-Reyes",
+      service: "ai-automations",
+      highlight: "cut our ops cost by $1,800 a month",
       role: "Founder",
       company: "Fieldstone Analytics",
     },
@@ -97,6 +107,8 @@ export const proof = {
       quote:
         "Patient intake used to be three tools duct-taped together. They replaced it with one flow that handles 200 forms a day without a single manual touch.",
       name: "Hiroshi Okafor-Lane",
+      service: "ai-automations",
+      highlight: "200 forms a day without a single manual touch",
       role: "CTO",
       company: "Stratford Clinical",
     },
@@ -104,6 +116,8 @@ export const proof = {
       quote:
         "Our demo page looked like a 2019 SaaS template. The redesign pulled in two enterprise deals the first month — deals we'd chased for a year.",
       name: "Emilia Vanden Berg",
+      service: "web-design",
+      highlight: "two enterprise deals the first month",
       role: "VP Marketing",
       company: "Kielder Bio",
     },
@@ -111,6 +125,8 @@ export const proof = {
       quote:
         "Custom GHL build tracking every shipment from bid to invoice. Sales stopped living in spreadsheets. Close rate up 34% in the first quarter.",
       name: "Daniyar Oralbek",
+      service: "ghl",
+      highlight: "Close rate up 34%",
       role: "COO",
       company: "Caspian Freight",
     },
@@ -118,6 +134,8 @@ export const proof = {
       quote:
         "They didn't try to sell us anything we didn't need. Three-page site, one automation, and it outperformed the old stack on every metric we track.",
       name: "Willa Ngata-Franks",
+      service: "web-design",
+      highlight: "outperformed the old stack on every metric",
       role: "Founder",
       company: "Tūrangi Organic",
     },
@@ -125,6 +143,8 @@ export const proof = {
       quote:
         "I watched them scope, price, and ship a full CRM migration inside two weeks. I've been quoted six months for the same thing. Twice.",
       name: "Rafael Cordeiro-Steyn",
+      service: "ghl",
+      highlight: "a full CRM migration inside two weeks",
       role: "Director",
       company: "Bluewater Consulting",
     },
@@ -132,6 +152,8 @@ export const proof = {
       quote:
         "The n8n agent they built auto-qualifies every inbound lead against six criteria. We stopped hiring the second SDR we had budgeted.",
       name: "Sabine Lindqvist",
+      service: "ai-automations",
+      highlight: "auto-qualifies every inbound lead",
       role: "Head of RevOps",
       company: "Halden Group",
     },
@@ -139,6 +161,8 @@ export const proof = {
       quote:
         "I have worked with three agencies on GHL before this. This was the first time the system actually mapped to how we sell.",
       name: "Priyanka Katara",
+      service: "ghl",
+      highlight: "actually mapped to how we sell",
       role: "COO",
       company: "Mercado Atlas",
     },
@@ -146,6 +170,8 @@ export const proof = {
       quote:
         "Clear scope, honest timelines, and a working demo at the end of every week. It sounds obvious. In this industry, it really isn't.",
       name: "Tomás Alarcón-Reid",
+      service: "product-development",
+      highlight: "a working demo at the end of every week",
       role: "Product Lead",
       company: "Porthaven Labs",
     },
@@ -153,6 +179,8 @@ export const proof = {
       quote:
         "The new site doubled our studio inquiries in the first month. The old one had been live for three years and we thought it was fine.",
       name: "Noor Al-Hassan",
+      service: "web-design",
+      highlight: "doubled our studio inquiries",
       role: "Founder",
       company: "Thalia Interiors",
     },
@@ -160,6 +188,8 @@ export const proof = {
       quote:
         "Replaced a six-person ticket queue with two agents and a dashboard. Nobody got laid off — they moved to work that actually needs a human.",
       name: "Kenji Maitland-Oyebade",
+      service: "ai-automations",
+      highlight: "a six-person ticket queue with two agents",
       role: "Ops Manager",
       company: "Arcline Freight",
     },

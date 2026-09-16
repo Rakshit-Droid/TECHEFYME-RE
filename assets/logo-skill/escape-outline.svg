@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="TechefyMe">
-  <title>TechefyMe — Escape · outline</title>
-  <mask id="escape-outlinem"><rect width="100" height="100" fill="#fff"/><rect x="8" y="52" width="84" height="12" rx="6" fill="#000" transform="rotate(-16 50 58)"/></mask>
-  <g mask="url(#escape-outlinem)"><circle cx="48" cy="50" r="28" fill="none" stroke="currentColor" stroke-width="5"/></g>
-  <circle cx="84" cy="26" r="6" fill="#e11d48"/>
-</svg>

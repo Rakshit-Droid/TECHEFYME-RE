@@ -12,6 +12,8 @@
     "encode:hero": "bash scripts/encode-hero.sh"
   },
   "dependencies": {
+    "@splinetool/react-spline": "^4.1.0",
+    "@splinetool/runtime": "^2.0.53",
     "@vercel/analytics": "^2.0.1",
     "@vercel/speed-insights": "^2.0.0",
     "gsap": "^3.15.0",
@@ -19,6 +21,7 @@
     "react": "19.2.8",
     "react-dom": "19.2.8",
     "server-only": "^0.0.1",
+    "three": "^0.186.0",
     "zod": "^4.6.5"
   },
   "devDependencies": {
@@ -28,9 +31,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "@types/three": "^0.186.0",
+    "dotted-map": "^3.1.0",
     "eslint": "^9",
     "eslint-config-next": "16.3.5",
-    "lighthouse": "^12.8.2",
+    "lighthouse": "^13.4.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

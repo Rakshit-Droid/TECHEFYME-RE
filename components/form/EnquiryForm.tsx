@@ -44,7 +44,7 @@ export function EnquiryForm() {
   const errorList = Object.entries(state.errors ?? {}) as [EnquiryField, string][];
 
   return (
-    <form action={action} onFocusCapture={onFirstFocus} className="flex flex-col gap-8">
+    <form action={action} onFocusCapture={onFirstFocus} className="flex flex-col gap-3.5">
       {state.status !== "idle" ? (
         <div ref={alertRef} tabIndex={-1} role="alert" className="rounded-card bg-bg p-4 text-support outline-none">
           {state.status === "invalid" ? (
@@ -81,8 +81,9 @@ export function EnquiryForm() {
       </div>
       <input ref={startedRef} type="hidden" name="startedAt" defaultValue="" />
 
-      <div className="grid gap-8 md:grid-cols-2 md:gap-x-6">
-        <Field name="name" label={f.name} error={err("name")}>
+      {/* Two across, then service, budget and timeline three across, so the form fits one screen. */}
+      <div className="grid gap-3 sm:grid-cols-6 sm:gap-x-3">
+        <Field name="name" label={f.name} error={err("name")} className="sm:col-span-3">
           <input
             id="enquiry-name"
             name="name"
@@ -95,7 +96,7 @@ export function EnquiryForm() {
             className="field"
           />
         </Field>
-        <Field name="email" label={f.email} error={err("email")}>
+        <Field name="email" label={f.email} error={err("email")} className="sm:col-span-3">
           <input
             id="enquiry-email"
             name="email"
@@ -108,7 +109,7 @@ export function EnquiryForm() {
             className="field"
           />
         </Field>
-        <Field name="phone" label={f.phone} error={err("phone")}>
+        <Field name="phone" label={f.phone} error={err("phone")} className="sm:col-span-3">
           <input
             id="enquiry-phone"
             name="phone"
@@ -120,7 +121,7 @@ export function EnquiryForm() {
             className="field"
           />
         </Field>
-        <Field name="country" label={f.country} error={err("country")}>
+        <Field name="country" label={f.country} error={err("country")} className="sm:col-span-3">
           <select
             id="enquiry-country"
             name="country"
@@ -138,7 +139,7 @@ export function EnquiryForm() {
             ))}
           </select>
         </Field>
-        <Field name="service" label={f.service} error={err("service")}>
+        <Field name="service" label={f.service} error={err("service")} className="sm:col-span-2">
           <select
             id="enquiry-service"
             name="service"
@@ -158,7 +159,7 @@ export function EnquiryForm() {
             ))}
           </select>
         </Field>
-        <Field name="budget" label={f.budget} error={err("budget")}>
+        <Field name="budget" label={f.budget} error={err("budget")} className="sm:col-span-2">
           <select
             id="enquiry-budget"
             name="budget"
@@ -175,7 +176,7 @@ export function EnquiryForm() {
             ))}
           </select>
         </Field>
-        <Field name="timeline" label={f.timeline} error={err("timeline")}>
+        <Field name="timeline" label={f.timeline} error={err("timeline")} className="sm:col-span-2">
           <select
             id="enquiry-timeline"
             name="timeline"
@@ -199,19 +200,19 @@ export function EnquiryForm() {
           id="enquiry-details"
           name="details"
           required
-          rows={5}
+          rows={3}
           defaultValue={val("details")}
           aria-invalid={err("details") ? true : undefined}
           aria-describedby={describe("details", "details-hint")}
           className="field"
         />
-        <p id="details-hint" className="text-support mt-2 text-muted">
+        <p id="details-hint" className="mt-1 text-[0.8125rem] text-muted">
           {f.detailsHint}
         </p>
       </Field>
 
       <div>
-        <label htmlFor="enquiry-consent" className="flex min-h-11 cursor-pointer items-start gap-3 text-support">
+        <label htmlFor="enquiry-consent" className="flex cursor-pointer items-start gap-3 text-[0.8125rem] leading-snug">
           <input
             id="enquiry-consent"
             name="consent"
@@ -220,7 +221,7 @@ export function EnquiryForm() {
             defaultChecked={val("consent") === "on"}
             aria-invalid={err("consent") ? true : undefined}
             aria-describedby={err("consent") ? "consent-error" : undefined}
-            className="mt-0.5 size-5 shrink-0 accent-(--ink)"
+            className="size-5 shrink-0 accent-(--ink)"
           />
           <span className="text-muted">{f.consent}</span>
         </label>
@@ -231,11 +232,11 @@ export function EnquiryForm() {
         ) : null}
       </div>
 
-      <div className="flex flex-col items-stretch gap-4 sm:flex-row sm:items-center sm:gap-6">
+      <div className="flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:gap-6">
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex h-12 items-center justify-center rounded-pill bg-accent-solid px-7 text-[1.0625rem] font-medium text-accent-ink transition-colors duration-150 ease-ui hover:bg-accent-hover disabled:opacity-40"
+          className="inline-flex h-11 items-center justify-center rounded-pill bg-accent-solid px-7 text-[1.0625rem] font-medium text-accent-ink transition-colors duration-150 ease-ui hover:bg-accent-hover disabled:opacity-40"
         >
           {f.submit}
         </button>
@@ -249,21 +250,23 @@ function Field({
   name,
   label,
   error,
+  className = "",
   children,
 }: {
   name: EnquiryField;
   label: string;
   error?: string;
+  className?: string;
   children: ReactNode;
 }) {
   return (
-    <div>
-      <label htmlFor={`enquiry-${name}`} className="text-support block font-medium text-muted">
+    <div className={className}>
+      <label htmlFor={`enquiry-${name}`} className="block text-[0.8125rem] font-medium text-muted">
         {label}
       </label>
       <div className="mt-1">{children}</div>
       {error ? (
-        <p id={`${name}-error`} className="mt-2 text-[0.8125rem] text-ink">
+        <p id={`${name}-error`} className="mt-1 text-[0.8125rem] text-ink">
           {error}
         </p>
       ) : null}

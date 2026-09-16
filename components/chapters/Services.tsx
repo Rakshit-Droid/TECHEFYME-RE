@@ -1,62 +1,94 @@
-import { Exhibit } from "@/components/exhibits/Exhibit";
-import { ActiveSteps } from "@/components/motion/ActiveSteps";
-import { Button } from "@/components/ui/Button";
-import { Chapter } from "@/components/ui/Chapter";
+import type { CSSProperties } from "react";
+import { Container } from "@/components/ui/Container";
+import { ShinyButton } from "@/components/ui/shiny-button";
 import { BOOKING_URL, hero } from "@/content/site";
 import { services } from "@/content/services";
+import { SERVICE_COLORS } from "@/lib/service-colors";
+import { ServiceDemo } from "./ServiceDemos";
+import { ServicesRail } from "./ServicesRail";
 
-const REEL = "(min-width: 1024px) and (min-height: 720px)";
+const COLORS = services.map((service) => SERVICE_COLORS[service.id]);
 
 /**
- * The demonstration beat. Desktop: the text column scrolls while one sticky card
- * swaps to the service in view. Elsewhere: each card sits under its text.
+ * The demonstration beat, and the peak of the page. On a wide screen the chapter holds
+ * the screen and five panels slide past sideways, each with its service on the left
+ * and a live scene on the right that builds as the panel arrives. On smaller screens
+ * the panels stack and each scene builds as it scrolls into view.
  */
 export function Services() {
   return (
-    <Chapter id="services" theme="light" labelledBy="services-title">
+    <section
+      id="services"
+      data-anchor=""
+      data-nav-section="services"
+      data-theme="dark"
+      aria-labelledby="services-title"
+      className="services text-ink"
+    >
       <h2 id="services-title" className="sr-only">
         Services
       </h2>
-      <div className="grid grid-cols-12 gap-x-4 md:gap-x-6">
-        <div className="col-span-12 flex flex-col gap-20 md:gap-24 js:lg:tall:col-span-5 js:lg:tall:gap-40">
-          {services.map((service, i) => (
-            <article key={service.id} data-step={i} aria-labelledby={`service-${service.id}`}>
-              <div data-reveal="statement">
-                <p data-reveal-item className="eyebrow tabular text-accent">
-                  {String(i + 1).padStart(2, "0")} · {service.name}
-                </p>
-                <h3 id={`service-${service.id}`} data-reveal-item className="text-feature mt-4">
-                  {service.statement}
-                </h3>
-                <p data-reveal-item className="text-body mt-4 max-w-[46ch] text-muted">
-                  {service.description}
-                </p>
-              </div>
-
-              {/* Stacked card: phones, tablets, short desktops, and no-JS. */}
-              <Exhibit exhibit={service.exhibit} revealRows className="mt-8 max-w-[560px] js:lg:tall:hidden" />
-            </article>
-          ))}
-
-          <div>
-            <Button href={BOOKING_URL} variant="link" size="lg" track="cta_book" trackLocation="services">
-              {hero.primary} <span aria-hidden="true">›</span>
-            </Button>
-          </div>
-        </div>
-
-        {/* Desktop sticky stack. Hidden from assistive tech: the stacked cards above carry the content. */}
-        <div aria-hidden="true" className="hidden js:lg:tall:col-span-6 js:lg:tall:col-start-7 js:lg:tall:block">
-          <div className="sticky top-28 grid">
-            {services.map((service, i) => (
-              <div key={service.id} data-step-target={i} {...(i === 0 ? { "data-active": "" } : {})} className="reel-item">
-                <Exhibit exhibit={service.exhibit} className="max-h-[calc(100vh-10rem)] min-h-[26rem]" />
-              </div>
+      <ServicesRail colors={COLORS}>
+        <div className="services-stage">
+          {/* One glow per service, crossfaded by opacity: repainting a full-screen
+              gradient in a new colour every frame is what made the rail stutter. */}
+          <div aria-hidden="true" className="services-glow">
+            {COLORS.map((c) => (
+              <span key={c} style={{ "--c": c } as CSSProperties} />
             ))}
           </div>
+          <div className="services-track">
+            {services.map((service, i) => (
+              <article
+                key={service.id}
+                aria-labelledby={`service-${service.id}`}
+                className="service-panel"
+                style={{ "--c": COLORS[i] } as CSSProperties}
+              >
+                <Container className="service-panel-inner">
+                  <div className="service-copy">
+                    <span aria-hidden="true" className="service-number">
+                      {String(i + 1).padStart(2, "0")}
+                    </span>
+                    <p className="eyebrow service-eyebrow">
+                      {String(i + 1).padStart(2, "0")} · {service.name}
+                    </p>
+                    <h3 id={`service-${service.id}`} className="text-chapter mt-4">
+                      {service.statement}
+                    </h3>
+                    <p className="text-lead mt-5 max-w-[34rem] text-muted">{service.description}</p>
+                    {i === services.length - 1 && (
+                      <div className="mt-9">
+                        <ShinyButton href={BOOKING_URL} label={hero.primary} track="cta_book" trackLocation="services" />
+                      </div>
+                    )}
+                  </div>
+                  <div className="service-scene">
+                    <ServiceDemo exhibit={service.exhibit} />
+                  </div>
+                </Container>
+              </article>
+            ))}
+          </div>
+
+          <nav aria-label="Services" className="services-tabs">
+            {services.map((service, i) => (
+              <button
+                key={service.id}
+                type="button"
+                className="services-tab"
+                aria-current={i === 0}
+                style={{ "--c": COLORS[i] } as CSSProperties}
+              >
+                <span className="services-tab-bar" aria-hidden="true" />
+                <span className="services-tab-label">
+                  <span className="tabular">{String(i + 1).padStart(2, "0")}</span> {service.name}
+                </span>
+              </button>
+            ))}
+          </nav>
         </div>
-      </div>
-      <ActiveSteps line={0.55} media={REEL} />
-    </Chapter>
+      </ServicesRail>
+    </section>
   );
 }

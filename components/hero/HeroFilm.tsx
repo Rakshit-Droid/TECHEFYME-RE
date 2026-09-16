@@ -27,8 +27,9 @@ const LOGO_ZOOM = 1.2;
  */
 const ARRIVE_AT = 0.85;
 
-/** The headline waits this long after the lockup has landed. */
+/** The headline starts this long after the lockup has landed, and assembles over HEADLINE_SECONDS. */
 const REVEAL_DELAY = 0.1;
+const HEADLINE_SECONDS = 1.4;
 
 /**
  * The playhead follows the scroll position rather than jumping to it: it closes about
@@ -105,6 +106,7 @@ export function HeroFilm() {
     let disposed = false;
     let segment: Segment | "" = "";
     let navLogoOpacity = "";
+    const vars: Record<string, string> = {};
 
     const parallax = createParallax(section, wrap);
     const navProbe = createNavProbe(() => (hands.painted ? handsEl : undefined));
@@ -272,6 +274,14 @@ export function HeroFilm() {
       if (section.dataset[key] !== value) section.dataset[key] = value;
     };
 
+    /** Scroll-driven values the arrival's CSS is written against; written only on change. */
+    const setVar = (name: string, value: number) => {
+      const v = value.toFixed(3);
+      if (vars[name] === v) return;
+      vars[name] = v;
+      section.style.setProperty(name, v);
+    };
+
     /** Reads the scroll position into `target`; says whether the hero is off screen. */
     const readTarget = () => {
       const distance = section.offsetHeight - window.innerHeight;
@@ -290,7 +300,11 @@ export function HeroFilm() {
         section.dataset.heroStarted = "";
       }
       setData("theme", time >= CUES.navDark ? "dark" : "light");
-      const revealed = time >= FILM_SECONDS + MERGE_SECONDS + REVEAL_DELAY;
+      const headline = FILM_SECONDS + MERGE_SECONDS + REVEAL_DELAY;
+      const revealed = time >= headline;
+      setVar("--hp", clamp01((time - headline) / HEADLINE_SECONDS));
+      // Light starts to return while the lockup is still in flight, full as the words land.
+      setVar("--glow", smoothstep(FILM_SECONDS + MERGE_SECONDS * 0.55, headline + 1.0, time));
       setData("heroState", revealed ? "revealed" : started ? "playing" : "idle");
       if (revealed && !completed) {
         completed = true;

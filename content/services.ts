@@ -49,10 +49,6 @@ export type Service =
       };
     };
 
-export const servicesChapter = {
-  eyebrow: "01 · Services",
-} as const;
-
 export const services: readonly Service[] = [
   {
     id: "web-design",

@@ -11,6 +11,8 @@ type Props = {
   labelledBy?: string;
   label?: string;
   className?: string;
+  /** Tighter padding and intro gap, for chapters that should read in one screen. */
+  compact?: boolean;
   children: ReactNode;
 };
 
@@ -18,7 +20,7 @@ type Props = {
  * One chapter, one polarity. The intro is centred and the body follows:
  * eyebrow, headline, one supporting line, then the content.
  */
-export function Chapter({ id, theme, eyebrow, title, titleId, lead, labelledBy, label, className = "", children }: Props) {
+export function Chapter({ id, theme, eyebrow, title, titleId, lead, labelledBy, label, className = "", compact = false, children }: Props) {
   return (
     <section
       id={id}
@@ -27,7 +29,7 @@ export function Chapter({ id, theme, eyebrow, title, titleId, lead, labelledBy, 
       data-theme={theme === "surface" ? "light" : theme}
       aria-labelledby={labelledBy ?? titleId}
       aria-label={labelledBy ?? titleId ? undefined : label}
-      className={`${theme === "surface" ? "bg-surface" : "bg-bg"} py-20 text-ink md:py-28 xl:py-36 ${className}`}
+      className={`${theme === "surface" ? "bg-surface" : "bg-bg"} ${compact ? "py-16 md:py-20 xl:py-24" : "py-20 md:py-28 xl:py-36"} text-ink ${className}`}
     >
       <Container>
         {(eyebrow || title) && (
@@ -49,7 +51,7 @@ export function Chapter({ id, theme, eyebrow, title, titleId, lead, labelledBy, 
             ) : null}
           </div>
         )}
-        <div className={eyebrow || title ? "mt-14 md:mt-20" : ""}>{children}</div>
+        <div className={eyebrow || title ? (compact ? "mt-10 md:mt-12" : "mt-14 md:mt-20") : ""}>{children}</div>
       </Container>
     </section>
   );

@@ -1,7 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="TechefyMe">
-  <title>TechefyMe — Escape · amber</title>
-  <defs><linearGradient id="escape-amberg" x1="18" y1="18" x2="76" y2="78"><stop offset="0%" stop-color="#fcd34d"/><stop offset="55%" stop-color="#f59e0b"/><stop offset="100%" stop-color="#92400e"/></linearGradient></defs>
-  <mask id="escape-amberm"><rect width="100" height="100" fill="#fff"/><rect x="8" y="52" width="84" height="12" rx="6" fill="#000" transform="rotate(-16 50 58)"/></mask>
-  <circle cx="48" cy="50" r="30" fill="url(#escape-amberg)" mask="url(#escape-amberm)"/>
-  <circle cx="84" cy="26" r="6" fill="#fde68a"/>
-</svg>

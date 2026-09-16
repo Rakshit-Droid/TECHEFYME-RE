@@ -17,7 +17,7 @@ export const INTRO = {
   capMs: 6000,
 } as const;
 
-export const INTRO_KEY = "tm-intro";
+const INTRO_KEY = "tm-intro";
 
 /**
  * Runs in <head> before first paint, so the curtain is in the first painted frame

@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="TechefyMe">
-  <title>TechefyMe — Honeycomb</title>
-  <g fill="currentColor">
-  <path d="M50 20l10 6v12l-10 6-10-6V26z"/><path d="M68 31l10 6v12l-10 6-10-6V37z"/>
-  <path d="M32 31l10 6v12l-10 6-10-6V37z"/><path d="M50 42l10 6v12l-10 6-10-6V48z"/>
-  <path d="M68 53l10 6v12l-10 6-10-6V59z"/><path d="M50 64l10 6v12l-10 6-10-6V70z"/>
-  </g>
-</svg>

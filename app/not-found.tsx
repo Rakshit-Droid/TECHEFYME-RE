@@ -1,19 +1,40 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Container } from "@/components/ui/Container";
-import { site } from "@/content/site";
 
+/** Next adds the noindex itself on a 404. */
+export const metadata: Metadata = {
+  title: "Page not found",
+};
+
+/** The 404: a large numeral fading into the dark, one line, and two ways back in. */
 export default function NotFound() {
   return (
-    <section data-theme="light" className="flex min-h-svh items-end bg-bg pt-[calc(var(--nav-h)+4rem)] pb-24 text-ink md:pb-40">
+    <section data-theme="dark" className="flex min-h-svh items-center bg-bg pt-[var(--nav-h)] pb-16 text-ink">
       <Container>
-        <p className="eyebrow text-accent">404</p>
-        <h1 className="text-statement mt-6">Not found.</h1>
-        <Link
-          href="/"
-          className="text-lead mt-10 inline-flex min-h-11 items-center text-accent underline-offset-4 hover:underline"
-        >
-          {site.shortName} <span aria-hidden="true">&nbsp;→</span>
-        </Link>
+        <div className="mx-auto max-w-[32rem] text-center">
+          <p className="not-found-code" aria-hidden="true">
+            404
+          </p>
+          <h1 className="text-body text-muted">The page you&rsquo;re looking for might have been moved or doesn&rsquo;t exist.</h1>
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
+            <Link href="/" className="not-found-button not-found-button--primary">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M3 10.5 12 3l9 7.5" />
+                <path d="M5 9.5V21h14V9.5" />
+                <path d="M10 21v-6h4v6" />
+              </svg>
+              Go Home
+            </Link>
+            <Link href="/#services" className="not-found-button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="9" />
+                <path d="m15.5 8.5-2 5-5 2 2-5z" />
+              </svg>
+              Explore
+            </Link>
+          </div>
+        </div>
       </Container>
     </section>
   );

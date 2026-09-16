@@ -1,8 +1,13 @@
 import { EnquiryForm } from "@/components/form/EnquiryForm";
 import { Container } from "@/components/ui/Container";
 import { contact } from "@/content/site";
+import { RobotScene } from "./RobotScene";
 
-/** The last frame: the form on black, with the direct channels beside it. */
+/**
+ * The last frame, sized to one screen on a desktop. The statement, the direct channels and
+ * the form sit on the left; the robot stands clear in the right half of the section,
+ * looking toward the pointer anywhere in the section. On narrow screens it is left out.
+ */
 export function Contact() {
   return (
     <section
@@ -10,48 +15,52 @@ export function Contact() {
       data-anchor=""
       data-theme="dark"
       data-nav-section="contact"
+      data-robot-scope=""
       aria-labelledby="contact-title"
-      className="bg-bg py-20 text-ink md:py-28 xl:py-36"
+      className="contact relative isolate overflow-clip bg-bg py-16 text-ink md:py-20 lg:py-12"
     >
-      <Container>
-        <div data-reveal="statement" className="mx-auto max-w-[46rem] text-center">
-          <p data-reveal-item className="eyebrow text-accent">
-            {contact.eyebrow}
-          </p>
-          <h2 id="contact-title" data-reveal-item className="text-chapter mt-4">
-            {contact.title}
-          </h2>
-          <p data-reveal-item className="text-lead mx-auto mt-5 max-w-[42rem] text-muted">
-            {contact.lead}
-          </p>
-        </div>
-
-        <div className="mt-14 grid grid-cols-12 gap-4 md:mt-20 md:gap-6">
-          <div className="col-span-12 rounded-panel bg-surface p-6 md:p-10 lg:col-span-7">
-            <EnquiryForm />
-          </div>
-
-          <div className="col-span-12 lg:col-span-5">
-            <p className="eyebrow text-faint">{contact.channelsLabel}</p>
-            <ul className="mt-5 grid gap-3">
-              {contact.channels.map((c) => (
-                <li key={c.label}>
-                  <a
-                    href={c.href}
-                    {...(c.kind === "whatsapp"
-                      ? { target: "_blank", rel: "noopener noreferrer", "data-track": "whatsapp_click" }
-                      : {})}
-                    className="card group flex items-baseline gap-4 px-6 py-5 transition-colors duration-150 hover:bg-line/40"
-                  >
-                    <span className="eyebrow w-20 shrink-0 text-faint">{c.label}</span>
-                    <span>
-                      <span className="block font-medium tabular">{c.value}</span>
-                      <span className="text-support mt-1 block text-muted">{c.note}</span>
-                    </span>
-                  </a>
-                </li>
-              ))}
+      <RobotScene />
+      {/* Above the robot's stage, which runs under the right edge of the form. */}
+      <Container className="relative z-[1]">
+        <div className="grid gap-10 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-12">
+          <div>
+            <div data-reveal="statement">
+              <p data-reveal-item className="eyebrow text-accent">
+                {contact.eyebrow}
+              </p>
+              <h2 id="contact-title" data-reveal-item className="contact-title mt-3">
+                {contact.title}
+              </h2>
+              <p data-reveal-item className="mt-2.5 max-w-[40rem] text-[0.9375rem] leading-relaxed text-muted">
+                {contact.lead}
+              </p>
+            </div>
+            {/* The lead ends "Pick a channel below", so the channels come straight after it. */}
+            <ul aria-label={contact.channelsLabel} className="mt-4 flex flex-wrap gap-2">
+              {contact.channels.map((c) => {
+                // WhatsApp and SMS share the phone number, so only phone and email show a value.
+                const showValue = c.kind === "phone" || c.kind === "email";
+                return (
+                  <li key={c.label}>
+                    <a
+                      href={c.href}
+                      title={`${c.value} · ${c.note}`}
+                      {...(c.kind === "whatsapp"
+                        ? { target: "_blank", rel: "noopener noreferrer", "data-track": "whatsapp_click" }
+                        : {})}
+                      className="contact-link"
+                    >
+                      <span className="contact-link-label">{c.label}</span>
+                      <span className={showValue ? "tabular" : "sr-only"}>{c.value}</span>
+                      <span className="sr-only">, {c.note}</span>
+                    </a>
+                  </li>
+                );
+              })}
             </ul>
+            <div className="mt-6">
+              <EnquiryForm />
+            </div>
           </div>
         </div>
       </Container>

@@ -4,7 +4,7 @@
  * and ipapi.co, which the redesigned site does not use. Update before launch.
  */
 
-export type LegalBlock =
+type LegalBlock =
   | { type: "p"; text: string }
   | { type: "ul"; items: readonly string[] }
   | { type: "dl"; items: readonly { term: string; value: string; note: string }[] };
@@ -470,4 +470,3 @@ export const delivery: LegalDoc = {
   ],
 };
 
-export const legalDocs = { privacy, terms, refunds, delivery } as const;

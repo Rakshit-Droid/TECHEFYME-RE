@@ -24,6 +24,12 @@ export function init() {
     const belowFold = new Set(
       groups.filter((el) => el.offsetParent !== null && el.getBoundingClientRect().top > window.innerHeight),
     );
+    // Every arrival still waiting on its trigger, by group, so keyboard focus can force it.
+    const pending = new Map<HTMLElement, gsap.core.Tween[]>();
+    const arrival = (group: HTMLElement, tween: gsap.core.Tween) => {
+      pending.set(group, [...(pending.get(group) ?? []), tween]);
+      return tween;
+    };
 
     for (const group of belowFold) {
       const kind = group.dataset.reveal;
@@ -31,41 +37,41 @@ export function init() {
 
       if (kind === "statement" && items.length) {
         gsap.set(items, { opacity: 0, y: Y.block * rise });
-        gsap.to(items, {
+        arrival(group, gsap.to(items, {
           opacity: 1,
           y: 0,
           duration: mobile ? T.t3 : T.t4,
           ease: EASE.enter,
           stagger: STAGGER.block,
           scrollTrigger: { trigger: group, start: AT.statement, once: true },
-        });
+        }));
       } else if (kind === "rows" && items.length) {
         gsap.set(items, { opacity: 0, y: Y.row * rise });
-        gsap.to(items, {
+        arrival(group, gsap.to(items, {
           opacity: 1,
           y: 0,
           duration: T.t3,
           ease: EASE.enter,
           stagger: stagger(mobile ? STAGGER.metricMobile : STAGGER.metric, items.length),
           scrollTrigger: { trigger: group, start: AT.statement, once: true },
-        });
+        }));
       } else if (kind === "exhibit" && items.length) {
         gsap.set(items, { opacity: 0 });
-        gsap.to(items, {
+        arrival(group, gsap.to(items, {
           opacity: 1,
           duration: 0.3,
           ease: EASE.enter,
           stagger: stagger(STAGGER.rowMobile, items.length),
           scrollTrigger: { trigger: group, start: AT.rows, once: true },
-        });
+        }));
       } else if (kind === "fade") {
         gsap.set(group, { opacity: 0 });
-        gsap.to(group, {
+        arrival(group, gsap.to(group, {
           opacity: 1,
           duration: T.t4,
           ease: EASE.enter,
           scrollTrigger: { trigger: group, start: AT.statement, once: true },
-        });
+        }));
       }
 
       // The drawn rule in the comparison table is movement: skip it under reduced motion.
@@ -73,16 +79,28 @@ export function init() {
         const rules = Array.from(group.querySelectorAll<HTMLElement>("[data-wipe-v]"));
         if (rules.length) {
           gsap.set(rules, { scaleY: 0, transformOrigin: "50% 0%" });
-          gsap.to(rules, {
+          arrival(group, gsap.to(rules, {
             scaleY: 1,
             duration: T.t3,
             ease: EASE.draw,
             stagger: STAGGER.row,
             scrollTrigger: { trigger: group, start: AT.compare, once: true },
-          });
+          }));
         }
       }
     }
+
+    // Tabbing scrolls a link only just into view, short of its trigger, which would leave
+    // keyboard focus on an invisible element. Focus inside a waiting group lands it at once.
+    const onFocus = (e: FocusEvent) => {
+      const group = (e.target as Element | null)?.closest<HTMLElement>("[data-reveal], [data-wipe]");
+      const tweens = group && pending.get(group);
+      if (!tweens) return;
+      pending.delete(group);
+      for (const tween of tweens) tween.progress(1);
+    };
+    document.addEventListener("focusin", onFocus);
+    return () => document.removeEventListener("focusin", onFocus);
   };
 
   // Keyed on reduced motion only: crossing a width breakpoint must never revert and

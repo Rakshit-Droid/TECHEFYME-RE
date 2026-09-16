@@ -20,6 +20,7 @@ const jsonLd = [
     name: site.name,
     alternateName: site.shortName,
     url: site.url,
+    logo: `${site.url}/icon.svg`,
     email: site.email,
     telephone: site.phoneDisplay,
     description: site.description,

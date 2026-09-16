@@ -18,7 +18,7 @@ export const HANDS_SECONDS = 7.25;
 export const LOGO_SECONDS = 3.75;
 
 /** Frame 0, used as the poster so the first paint is the film's first frame. */
-export const POSTER = "/hero/poster.e145f54f.jpg";
+export const POSTER = "/hero/poster.b65ac76e.webp";
 
 /**
  * The lockup still, cut from the logo film's last frame. Coordinates are in the film's
@@ -41,7 +41,7 @@ export const NAV_MARK = { centerX: 0.54, centerY: 0.5, height: 0.6 } as const;
 
 /** Seconds of scroll-time the lockup takes to reach the header, and to hold the headline after. */
 export const MERGE_SECONDS = 2.0;
-export const TAIL_SECONDS = 1.2;
+const TAIL_SECONDS = 2.3;
 
 /** Where the films end and the flight begins, and the whole scrubbed timeline. */
 export const FILM_SECONDS = HANDS_SECONDS + LOGO_SECONDS;
@@ -67,7 +67,6 @@ export const FILM = "(min-width: 1024px) and (hover: hover) and (pointer: fine) 
 
 export const MOBILE = "(max-width: 767px)";
 
-export const REDUCED_MOTION = "(prefers-reduced-motion: reduce)";
 
 /**
  * Runs in <head> before first paint: marks JS as available so the hero can hide
