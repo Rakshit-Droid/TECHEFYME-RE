@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="TechefyMe">
+  <title>TechefyMe — Six regions</title>
+  <g fill="currentColor">
+  <circle cx="50" cy="34" r="3"/><circle cx="63.86" cy="42" r="3"/><circle cx="63.86" cy="58" r="3"/>
+  <circle cx="50" cy="66" r="3"/><circle cx="36.14" cy="58" r="3"/><circle cx="36.14" cy="42" r="3"/>
+  <circle cx="50" cy="22" r="2.4"/><circle cx="64" cy="25.8" r="2.4"/><circle cx="74.2" cy="36" r="2.4"/>
+  <circle cx="78" cy="50" r="4.6"/><circle cx="74.2" cy="64" r="2.4"/><circle cx="64" cy="74.2" r="2.4"/>
+  <circle cx="50" cy="78" r="2.4"/><circle cx="36" cy="74.2" r="2.4"/><circle cx="25.8" cy="64" r="2.4"/>
+  <circle cx="22" cy="50" r="2.4"/><circle cx="25.8" cy="36" r="2.4"/><circle cx="36" cy="25.8" r="2.4"/>
+  </g>
+</svg>

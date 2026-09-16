@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="TechefyMe">
+  <title>TechefyMe — Line field</title>
+  <defs>
+    <clipPath id="line field-x"><circle cx="50" cy="50" r="32"/></clipPath>
+  </defs>
+  <g clip-path="url(#line field-x)" stroke="currentColor" stroke-linecap="round">
+  <path d="M14 28h72" stroke-width="3"/><path d="M14 36h72" stroke-width="4"/>
+  <path d="M14 44h72" stroke-width="3"/><path d="M14 58h72" stroke-width="5"/>
+  <path d="M14 66h72" stroke-width="3"/><path d="M14 74h72" stroke-width="2.5"/>
+  </g>
+</svg>

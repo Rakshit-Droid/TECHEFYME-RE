@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="TechefyMe">
+  <title>TechefyMe — Lens</title>
+  <defs>
+    <clipPath id="lens-x"><circle cx="60" cy="50" r="24"/></clipPath>
+  </defs>
+  <circle cx="40" cy="50" r="24" fill="none" stroke="currentColor" stroke-width="3"/>
+  <circle cx="60" cy="50" r="24" fill="none" stroke="currentColor" stroke-width="3"/>
+  <circle cx="40" cy="50" r="24" clip-path="url(#lens-x)" fill="currentColor"/>
+</svg>

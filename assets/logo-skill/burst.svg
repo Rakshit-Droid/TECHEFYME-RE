@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="TechefyMe">
+  <title>TechefyMe — Burst</title>
+  <g stroke="currentColor" stroke-width="3.5" stroke-linecap="round">
+  <path d="M50 34V16"/><path d="M59.5 36.9 68 24"/><path d="M66.5 43.5 82 36"/>
+  <path d="M69 53.5 87 56"/><path d="M65 62.5 78 74"/><path d="M57 68.5 62 86"/>
+  <path d="M43 68.5 38 86"/><path d="M35 62.5 22 74"/><path d="M31 53.5 13 56"/>
+  <path d="M33.5 43.5 18 36"/>
+  </g>
+  <circle cx="50" cy="50" r="5" fill="currentColor"/>
+</svg>

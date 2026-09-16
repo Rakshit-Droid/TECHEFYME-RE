@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="TechefyMe">
+  <title>TechefyMe — Shadow</title>
+  <defs>
+    <mask id="shadow-x"><rect width="100" height="100" fill="#fff"/><circle cx="50" cy="50" r="17" fill="#000"/></mask>
+  </defs>
+  <g mask="url(#shadow-x)">
+  <path d="M50 19a31 31 0 0 1 0 62 31 31 0 0 1 0-62Z" fill="currentColor"/>
+  <path d="M50 19a31 31 0 0 0 0 62" fill="none" stroke="currentColor" stroke-width="13" stroke-linecap="round"/>
+  </g>
+</svg>

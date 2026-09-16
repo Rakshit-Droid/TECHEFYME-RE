@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="TechefyMe">
+  <title>TechefyMe — Sheared</title>
+  <defs>
+    <clipPath id="sheared-xa"><rect x="0" y="0" width="100" height="47"/></clipPath>
+    <clipPath id="sheared-xb"><rect x="0" y="53" width="100" height="47"/></clipPath>
+  </defs>
+  <circle cx="44" cy="50" r="30" fill="currentColor" clip-path="url(#sheared-xa)"/>
+  <circle cx="58" cy="50" r="30" fill="currentColor" clip-path="url(#sheared-xb)"/>
+</svg>

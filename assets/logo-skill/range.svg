@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="TechefyMe">
+  <title>TechefyMe — Range</title>
+  <circle cx="30" cy="50" r="8" fill="currentColor"/>
+  <g fill="none" stroke="currentColor" stroke-linecap="round">
+  <path d="M46 36a18 18 0 0 1 0 28" stroke-width="4"/>
+  <path d="M58 26a30 30 0 0 1 0 48" stroke-width="3.5"/>
+  <path d="M70 18a42 42 0 0 1 0 64" stroke-width="3"/>
+  </g>
+</svg>

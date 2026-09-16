@@ -1,0 +1,576 @@
+@import "tailwindcss";
+
+/* ------------------------------------------------------------------
+   Variants
+   film  — desktop with a fine pointer and motion allowed (cursor parallax)
+   tall  — enough height for sticky demonstrations
+   js    — only once the head script has marked JS as available
+------------------------------------------------------------------- */
+@custom-variant film (@media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference));
+@custom-variant tall (@media (min-height: 720px));
+@custom-variant js (&:where(html[data-js] *));
+
+/* ------------------------------------------------------------------
+   Colour tokens. Polarity is decided per chapter with data-theme.
+------------------------------------------------------------------- */
+/* ------------------------------------------------------------------
+   Colour. White and near-black with grey surfaces; one accent for actions.
+------------------------------------------------------------------- */
+:root,
+[data-theme="light"] {
+  --bg: #ffffff;
+  --surface: #f5f5f7;
+  --paper: #f5f5f7;
+  --ink: #1d1d1f;
+  --muted: #6b6b70;
+  --faint: #6b6b70;
+  --line: #d2d2d7;
+  --accent: #0066cc;
+  --accent-solid: #0071e3;
+  --accent-ink: #ffffff;
+  --accent-hover: #0077ed;
+  --cta: #0071e3;
+  --cta-ink: #ffffff;
+  --cta-hover: #0077ed;
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --bg: #000000;
+  --surface: #1d1d1f;
+  --paper: #1d1d1f;
+  --ink: #f5f5f7;
+  --muted: #a1a1a6;
+  --faint: #98989d;
+  --line: #424245;
+  --accent: #2997ff;
+  --accent-solid: #0071e3;
+  --accent-ink: #ffffff;
+  --accent-hover: #0077ed;
+  --cta: #ffffff;
+  --cta-ink: #1d1d1f;
+  --cta-hover: #e8e8ed;
+  color-scheme: dark;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:root {
+  --t-1: 150ms;
+  --t-2: 250ms;
+  --t-3: 400ms;
+  --t-4: 600ms;
+  --nav-h: 52px;
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --nav-h: 60px;
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-paper: var(--paper);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-faint: var(--faint);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-solid: var(--accent-solid);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-hover: var(--accent-hover);
+  --color-cta: var(--cta);
+  --color-cta-ink: var(--cta-ink);
+  --color-cta-hover: var(--cta-hover);
+
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+
+  --radius-xs: 8px;
+  --radius-card: 18px;
+  --radius-panel: 28px;
+  --radius-pill: 980px;
+
+  --ease-ui: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --ease-enter: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-draw: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-exit: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* ------------------------------------------------------------------
+   Type. One family, three weights. Size and tracking carry the hierarchy.
+------------------------------------------------------------------- */
+@utility text-hero {
+  font-weight: 600;
+  font-size: clamp(2.75rem, 6vw, 5rem);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+@utility text-statement {
+  font-weight: 600;
+  font-size: clamp(2.5rem, 5.2vw, 4.25rem);
+  line-height: 1.07;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+
+@utility text-chapter {
+  font-weight: 600;
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+
+@utility text-feature {
+  font-weight: 600;
+  font-size: clamp(1.625rem, 2.6vw, 2.25rem);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+
+@utility text-h3 {
+  font-weight: 600;
+  font-size: 1.125rem;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  @media (min-width: 768px) {
+    font-size: 1.25rem;
+  }
+}
+
+@utility text-lead {
+  font-weight: 400;
+  font-size: 1.0625rem;
+  line-height: 1.5;
+  letter-spacing: -0.01em;
+  @media (min-width: 768px) {
+    font-size: 1.3125rem;
+  }
+}
+
+@utility text-body {
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: -0.005em;
+  text-wrap: pretty;
+  @media (min-width: 768px) {
+    font-size: 1.0625rem;
+  }
+}
+
+@utility text-support {
+  font-weight: 400;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+@utility eyebrow {
+  font-weight: 600;
+  font-size: 0.75rem;
+  line-height: 1;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+@utility text-data {
+  font-weight: 500;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-variant-numeric: tabular-nums;
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* A card: the grey panel Apple uses to hold a feature. */
+@utility card {
+  background: var(--surface);
+  border-radius: var(--radius-card);
+  overflow: hidden;
+}
+
+/* ------------------------------------------------------------------
+   Base
+------------------------------------------------------------------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    scroll-behavior: smooth;
+    background: #ffffff;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 1rem;
+    line-height: 1.6;
+    overflow-x: clip;
+  }
+
+  [data-theme] {
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--ink);
+    color: var(--bg);
+  }
+
+  [data-anchor] {
+    scroll-margin-top: calc(var(--nav-h) + 32px);
+  }
+
+  /* Native disclosure markers are replaced by a typographic + / − */
+  summary {
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+}
+
+/* Reduced motion: keep colour feedback, remove movement. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after,
+  ::details-content {
+    /* Fades stay; movement goes. */
+    transition-property: color, background-color, border-color, text-decoration-color, opacity !important;
+    animation: none !important;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Intro. A black curtain over the first page of a session. The head script
+   decides whether it exists at all; without it there is no curtain and no
+   scroll lock, so a page with no JS behaves exactly as it always did.
+------------------------------------------------------------------- */
+@layer components {
+  .intro {
+    display: none;
+  }
+
+  /* The gutter is reserved so releasing the lock does not shift the page by a
+     scrollbar's width; the root goes black so that reserved strip is not a white
+     seam down the side of the curtain. */
+  html[data-intro] {
+    overflow: hidden;
+    scrollbar-gutter: stable;
+    background: #000000;
+  }
+
+  html[data-intro] .intro {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: grid;
+    place-items: center;
+    background: #000000;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+    opacity: 1;
+    /* The film ends on black; the white hero rises through it. */
+    transition: opacity var(--t-3) var(--ease-enter);
+  }
+
+  html[data-intro-out] .intro {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  /* Never upscaled: the lockup stays crisp by being drawn smaller, not bigger.
+     The film's own black is a shade off the curtain's, so its edge is dissolved
+     rather than butted against it. */
+  .intro-video {
+    width: min(92vw, 1100px);
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: contain;
+    -webkit-mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 70%, transparent 100%);
+    mask-image: radial-gradient(ellipse 50% 50% at 50% 50%, #000 70%, transparent 100%);
+  }
+
+  /* Any input dismisses the curtain, so this exists for assistive technology,
+     not as a visible control. */
+  .intro-skip {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #6b6b70;
+    font-size: 0.75rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    clip-path: inset(50%);
+  }
+
+  .intro-skip:focus-visible {
+    clip-path: none;
+    outline-color: #f5f5f7;
+  }
+}
+
+/* ------------------------------------------------------------------
+   Hero. A tall section whose sticky layer holds the film; scroll position
+   picks the frame. data-hero-state: idle -> playing -> revealed.
+------------------------------------------------------------------- */
+@layer components {
+  .hero {
+    position: relative;
+    height: calc(100svh + var(--scrub));
+    --scrub: 482vh;
+    background: #ffffff;
+  }
+
+  @media (min-width: 1024px) {
+    .hero {
+      --scrub: 642vh;
+    }
+  }
+
+  .hero-sticky {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 30rem;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-sticky {
+      min-height: 700px;
+    }
+  }
+
+  .hero[data-hero-state="revealed"] .hero-sticky,
+  .hero[data-theme="dark"] .hero-sticky {
+    background: #000000;
+  }
+
+  .hero-parallax {
+    position: absolute;
+    inset: 0;
+    transform: translate3d(0, 0, 0);
+  }
+
+  /* Overscan for cursor parallax is present from first paint, so hydration never
+     rescales the frame. scale(1.03) covers the maximum ±12px / ±10px offset. */
+  @media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+    .hero-parallax {
+      transform: translate3d(0, 0, 0) scale(1.03);
+    }
+  }
+
+  /* Chrome ignores images that cover the whole viewport when picking the Largest
+     Contentful Paint element, so the media layer stops 1px short of the bottom. */
+  .hero-clip {
+    position: absolute;
+    inset: 0 0 1px 0;
+    overflow: hidden;
+  }
+
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 46% 55%;
+  }
+
+  .hero-canvas {
+    opacity: 0;
+  }
+
+  .hero[data-hero-painted] .hero-canvas {
+    opacity: 1;
+  }
+
+  .hero[data-hero-painted] .hero-poster {
+    visibility: hidden;
+  }
+
+  /* The lockup in flight. Positioned entirely by transform from HeroFilm; above the
+     nav (z-50) so it can land on the header logo rather than slide under the bar. */
+  .hero-lockup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 55;
+    transform-origin: 0 0;
+    pointer-events: none;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  .hero-lockup img {
+    display: block;
+    width: 100%;
+    max-width: none;
+    height: 100%;
+  }
+
+  .hero-cue {
+    position: absolute;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+    color: var(--muted);
+    transition: opacity var(--t-2) var(--ease-ui);
+  }
+
+  .hero[data-hero-started] .hero-cue,
+  html[data-hero-static] .hero-cue {
+    opacity: 0;
+  }
+
+  .hero [data-hero-item] {
+    transition:
+      opacity var(--t-4) var(--ease-enter) var(--d, 0ms),
+      transform var(--t-4) var(--ease-enter) var(--d, 0ms);
+  }
+
+  html[data-js]:not([data-hero-static]) .hero:is([data-hero-state="idle"], [data-hero-state="playing"]) [data-hero-item] {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+
+  /* Keyboard users get the text the moment focus enters the hero. */
+  html[data-js] .hero:is([data-hero-state="idle"], [data-hero-state="playing"]):focus-within [data-hero-item] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+
+  /* ----------------------------------------------------------------
+     Services reel (desktop sticky stack) and process index
+  ----------------------------------------------------------------- */
+  .reel-item {
+    grid-area: 1 / 1;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0, 12px, 0);
+    transition:
+      opacity var(--t-2) var(--ease-exit),
+      transform var(--t-2) var(--ease-exit),
+      visibility 0s linear var(--t-2);
+  }
+
+  .reel-item[data-active] {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition:
+      opacity var(--t-2) var(--ease-enter),
+      transform var(--t-2) var(--ease-enter),
+      visibility 0s;
+  }
+
+  .index-item {
+    color: var(--muted);
+    transition: color var(--t-2) var(--ease-ui);
+  }
+
+  .index-item[data-active] {
+    color: var(--ink);
+  }
+
+  /* ----------------------------------------------------------------
+     FAQ panel height (progressive, Chromium 131+)
+  ----------------------------------------------------------------- */
+  .faq-item::details-content {
+    block-size: 0;
+    overflow: clip;
+    opacity: 0;
+    transition:
+      block-size var(--t-2) var(--ease-enter),
+      opacity var(--t-2) var(--ease-enter),
+      content-visibility var(--t-2) allow-discrete;
+  }
+
+  .faq-item[open]::details-content {
+    block-size: auto;
+    opacity: 1;
+  }
+
+  @supports (interpolate-size: allow-keywords) {
+    .faq-item {
+      interpolate-size: allow-keywords;
+    }
+  }
+
+  /* ----------------------------------------------------------------
+     Form fields: hairline that turns ink on focus or error
+  ----------------------------------------------------------------- */
+  .field {
+    width: 100%;
+    min-height: 52px;
+    background: var(--bg);
+    color: var(--ink);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: border-color var(--t-1) var(--ease-ui);
+  }
+
+  .field:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 18%, transparent);
+  }
+
+  .field:focus-visible {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  .field[aria-invalid="true"],
+  .field:user-invalid {
+    border-color: #e5484d;
+  }
+
+  select.field {
+    appearance: none;
+    background-image: none;
+    cursor: pointer;
+  }
+
+  /* Dark chapters: the panel is the surface, so fields sit a step below it. */
+  [data-theme="dark"] .field {
+    background: #000000;
+    border-color: #48484d;
+  }
+
+  select.field option {
+    background: var(--bg);
+    color: var(--ink);
+  }
+
+  textarea.field {
+    min-height: 144px;
+    resize: vertical;
+  }
+}
