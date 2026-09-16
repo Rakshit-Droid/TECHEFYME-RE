@@ -34,14 +34,20 @@ export function heroSnapshot(page: Page): Promise<HeroSnapshot> {
     const distance = section.offsetHeight - window.innerHeight;
     const frame = distance > 0 ? Math.min(1, Math.max(0, -section.getBoundingClientRect().top / distance)) : 0;
 
-    const canvas = section.querySelector("canvas") as HTMLCanvasElement;
+    // The clip actually on screen, if it has a frame; a hidden or empty stage reads as black.
+    const video = Array.from(section.querySelectorAll("video")).find(
+      (v) => getComputedStyle(v).visibility === "visible" && getComputedStyle(v).opacity !== "0" && v.readyState >= 2,
+    );
     const probe = document.createElement("canvas");
     probe.width = 24;
     probe.height = 16;
-    const ctx = probe.getContext("2d")!;
-    ctx.drawImage(canvas, 0, 0, 24, 16);
-    const data = ctx.getImageData(0, 0, 24, 16).data;
+    const ctx = probe.getContext("2d", { willReadFrequently: true })!;
     let sum = 0;
+    let data = new Uint8ClampedArray(24 * 16 * 4);
+    if (video) {
+      ctx.drawImage(video, 0, 0, 24, 16);
+      data = ctx.getImageData(0, 0, 24, 16).data;
+    }
     for (let i = 0; i < data.length; i += 4) sum += 0.2126 * data[i]! + 0.7152 * data[i + 1]! + 0.0722 * data[i + 2]!;
     return {
       state: section.dataset.heroState ?? "",

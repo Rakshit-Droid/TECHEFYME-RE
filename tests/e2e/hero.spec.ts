@@ -1,10 +1,6 @@
 import { expect, test } from "@playwright/test";
-import { CUES, FRAMES, LOCKUP, MERGE_SECONDS, NAV_MARK, filmSeconds, progressAt } from "../../lib/hero-gate";
+import { CUES, FILM_SECONDS, LOCKUP, MERGE_SECONDS, NAV_MARK, progressAt } from "../../lib/hero-gate";
 import { collectMedia, heroSnapshot, scrubHero, skipIntro, waitForHeroState } from "./helpers";
-
-/** Scroll progress for a moment on the hero timeline, for whichever frame set the device gets. */
-const at = (isMobile: boolean, seconds: number) => progressAt(isMobile ? FRAMES.mobile : FRAMES.desktop, seconds);
-const landing = (isMobile: boolean) => filmSeconds(isMobile ? FRAMES.mobile : FRAMES.desktop);
 
 test.beforeEach(async ({ page }) => skipIntro(page));
 
@@ -29,7 +25,7 @@ test.describe("hero film", () => {
 
     // Past the black hole the logo film plays out of the black, still under the scroll,
     // and the headline waits for it.
-    await scrubHero(page, at(isMobile, CUES.logo + 2.2));
+    await scrubHero(page, progressAt(CUES.logo + 2.2));
     await expect.poll(async () => (await heroSnapshot(page)).luma, { timeout: 15_000 }).toBeGreaterThan(0.004);
     const logo = await heroSnapshot(page);
     expect(logo.state).toBe("playing");
@@ -53,16 +49,16 @@ test.describe("hero film", () => {
     expect(back.frame).toBeLessThan(end.frame);
     expect(back.theme).toBe("light");
 
-    // Frames only, no video, and the right set for the device.
-    expect(media.filter((u) => u.endsWith(".mp4"))).toHaveLength(0);
-    const frames = media.filter((u) => u.includes("/hero/frames/"));
-    expect(frames.length).toBeGreaterThan(20);
-    expect(frames.every((u) => u.includes(isMobile ? "/frames/m/" : "/frames/d/"))).toBe(true);
+    // Two scrub clips, each fetched once, in the rendition for the device.
+    const clips = media.filter((u) => u.startsWith("/hero/") && u.endsWith(".mp4"));
+    expect(clips.filter((u) => u.includes("/hero/hands.")).length).toBe(1);
+    expect(clips.filter((u) => u.includes("/hero/logo.")).length).toBe(1);
+    expect(clips.every((u) => u.endsWith(isMobile ? ".m.mp4" : ".d.mp4"))).toBe(true);
   });
 
-  test("the finished lockup flies into the header logo, then hands over to it", async ({ page, isMobile }) => {
+  test("the finished lockup flies into the header logo, then hands over to it", async ({ page }) => {
     await page.goto("/");
-    const end = landing(isMobile);
+    const end = FILM_SECONDS;
     const state = () =>
       page.evaluate(() => {
         const fly = document.querySelector<HTMLElement>(".hero-lockup")!;
@@ -78,14 +74,14 @@ test.describe("hero film", () => {
       });
 
     // On the film's last frame the lockup is still part of the film; the header logo has stepped aside.
-    await scrubHero(page, at(isMobile, end - 0.2));
+    await scrubHero(page, progressAt(end - 0.2));
     await expect.poll(async () => (await heroSnapshot(page)).luma, { timeout: 15_000 }).toBeGreaterThan(0.004);
     let s = await state();
     expect(s.visible).toBe(false);
     expect(s.logoOpacity).toBe(0);
 
     // Take-off: the still takes over from the film at the film's own size, and the film goes black.
-    await scrubHero(page, at(isMobile, end + 0.02));
+    await scrubHero(page, progressAt(end + 0.02));
     s = await state();
     expect(s.visible).toBe(true);
     const viewport = page.viewportSize()!;
@@ -93,7 +89,7 @@ test.describe("hero film", () => {
     expect((await heroSnapshot(page)).luma).toBeLessThan(0.002);
 
     // Mid-flight: smaller, higher, and the header logo still waiting.
-    await scrubHero(page, at(isMobile, end + MERGE_SECONDS * 0.5));
+    await scrubHero(page, progressAt(end + MERGE_SECONDS * 0.5));
     const mid = await state();
     expect(mid.visible).toBe(true);
     expect(mid.fly.width).toBeLessThan(s.fly.width);
@@ -101,7 +97,7 @@ test.describe("hero film", () => {
     expect(mid.logoOpacity).toBe(0);
 
     // Landing: the flying mark sits exactly on the header's mark, mid-handover.
-    await scrubHero(page, at(isMobile, end + MERGE_SECONDS * 0.93));
+    await scrubHero(page, progressAt(end + MERGE_SECONDS * 0.93));
     s = await state();
     const scale = s.fly.width / LOCKUP.crop.width;
     const flyMarkX = s.fly.left + (LOCKUP.mark.centerX - LOCKUP.crop.x) * scale;
@@ -120,7 +116,7 @@ test.describe("hero film", () => {
     expect(s.logoOpacity).toBe(1);
 
     // Scrolling back reverses all of it.
-    await scrubHero(page, at(isMobile, end - 0.2));
+    await scrubHero(page, progressAt(end - 0.2));
     s = await state();
     expect(s.visible).toBe(false);
     expect(s.logoOpacity).toBe(0);

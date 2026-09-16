@@ -13,52 +13,52 @@ const channels = [
 ];
 
 /**
- * The footer as a closing card: the address and the next step up top, the channels on
- * a hairline, the name set as large as the card allows, and the fine print underneath.
- * The glow rises from the bottom edge, so the top half stays quiet for reading.
+ * The closing screen, edge to edge: the address and the next step up top, the channels
+ * on a hairline, the name set as wide as the grid allows, and the fine print underneath.
+ * The glow rises from the bottom edge, so the top half stays quiet for reading. On
+ * desktop it fills the viewport, with the name held to the bottom.
  */
 export function Footer() {
   return (
-    <footer data-theme="dark" className="footer bg-bg pb-5 text-ink md:pb-8">
-      <Container>
-        <div className="footer-card" data-reveal="statement">
-          <div aria-hidden="true" className="footer-glow" />
-
-          <div className="relative grid gap-10 lg:grid-cols-[1fr_auto] lg:gap-16" data-reveal-item>
-            <div>
-              <p className="text-support text-muted">{site.regionsShort}</p>
-              <a
-                href={`mailto:${site.email}`}
-                className="footer-email mt-3 inline-block font-normal tracking-[-0.03em] transition-opacity duration-150 hover:opacity-70"
-              >
-                {site.email}
-              </a>
-              <nav aria-label="Footer" className="mt-8">
-                <ul className="flex flex-wrap gap-x-9 gap-y-1">
-                  {footer.navigate.map((l) => (
-                    <li key={l.label}>
-                      <Link
-                        href={l.href}
-                        className="text-support inline-flex min-h-11 items-center text-muted transition-colors duration-150 hover:text-ink"
-                      >
-                        {l.label}
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-              </nav>
-            </div>
-
-            <div className="max-w-[17rem]">
-              <p className="text-[1.0625rem] font-medium leading-snug tracking-[-0.01em]">{hero.title}</p>
-              <p className="text-support mt-2 text-muted">{contact.form.promise}</p>
-              <Button href={BOOKING_URL} className="mt-5" track="cta_book" trackLocation="footer">
-                {nav.cta}
-              </Button>
-            </div>
+    <footer data-theme="dark" className="footer text-ink" data-reveal="statement">
+      <div aria-hidden="true" className="footer-glow" />
+      <Container className="relative flex flex-col pt-16 pb-3 md:pt-24 md:pb-5 lg:min-h-svh lg:pb-6">
+        <div className="grid gap-10 lg:grid-cols-[1fr_auto] lg:gap-16" data-reveal-item>
+          <div>
+            <p className="text-support text-muted">{site.regionsShort}</p>
+            <a
+              href={`mailto:${site.email}`}
+              className="footer-email mt-3 inline-block font-normal tracking-[-0.03em] transition-opacity duration-150 hover:opacity-70"
+            >
+              {site.email}
+            </a>
+            <nav aria-label="Footer" className="mt-8">
+              <ul className="flex flex-wrap gap-x-9 gap-y-1">
+                {footer.navigate.map((l) => (
+                  <li key={l.label}>
+                    <Link
+                      href={l.href}
+                      className="text-support inline-flex min-h-11 items-center text-muted transition-colors duration-150 hover:text-ink"
+                    >
+                      {l.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
           </div>
 
-          <div className="relative mt-20 md:mt-28 lg:mt-36" data-reveal-item>
+          <div className="max-w-[17rem]">
+            <p className="text-[1.0625rem] font-medium leading-snug tracking-[-0.01em]">{hero.title}</p>
+            <p className="text-support mt-2 text-muted">{contact.form.promise}</p>
+            <Button href={BOOKING_URL} className="mt-5" track="cta_book" trackLocation="footer">
+              {nav.cta}
+            </Button>
+          </div>
+        </div>
+
+        <div className="mt-20 md:mt-28 lg:mt-auto lg:pt-24">
+          <div data-reveal-item>
             <ul className="grid grid-cols-2 gap-x-6 gap-y-1 sm:flex sm:justify-between">
               {channels.map((c) => (
                 <li key={c.label}>
@@ -75,12 +75,12 @@ export function Footer() {
             <div className="mt-4 h-px bg-white/20" />
           </div>
 
-          {/* Set in SVG so the name fills the card's width exactly at every size. The font
+          {/* Set in SVG so the name fills the grid's width exactly at every size. The font
               size is chosen so Inter's natural width is already the full 1000 units;
               textLength only takes up the slack if a fallback face is showing. */}
           <svg
             aria-hidden="true"
-            className="footer-wordmark relative mt-6 block w-full md:mt-8"
+            className="footer-wordmark mt-6 block w-full md:mt-8"
             viewBox="0 0 1000 127"
             data-reveal-item
           >
@@ -89,7 +89,7 @@ export function Footer() {
             </text>
           </svg>
 
-          <div className="text-support relative mt-6 flex flex-col gap-3 text-white/75 md:mt-8 lg:flex-row lg:items-center lg:justify-between">
+          <div className="text-support mt-6 flex flex-col gap-3 text-white/75 md:mt-8 lg:flex-row lg:items-center lg:justify-between">
             <p>{footer.copyright}</p>
             <nav aria-label="Legal">
               <ul className="flex flex-wrap gap-x-6 gap-y-1">

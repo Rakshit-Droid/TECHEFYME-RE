@@ -399,15 +399,40 @@
     object-position: 46% 55%;
   }
 
-  .hero-canvas {
+  /* The hands clip covers like the poster it replaces; it shows once a real frame
+     has painted, and the poster (frame 0) holds until then. */
+  .hero-video {
     opacity: 0;
+    background: #ffffff;
   }
 
-  .hero[data-hero-painted] .hero-canvas {
+  .hero[data-hero-painted] .hero-video {
     opacity: 1;
   }
 
   .hero[data-hero-painted] .hero-poster {
+    visibility: hidden;
+  }
+
+  /* The logo clip is drawn whole and scaled by --logo-zoom (set from the viewport),
+     so a portrait phone never crops the lockup. Its own black fills the letterbox. */
+  .hero-logo-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000000;
+    transform: scale(var(--logo-zoom, 1));
+    visibility: hidden;
+  }
+
+  /* Only the clip the playhead is in is on screen; past the films, the stage is black. */
+  .hero[data-hero-clip="logo"] .hero-logo-video {
+    visibility: visible;
+  }
+
+  .hero:is([data-hero-clip="logo"], [data-hero-clip="none"]) :is(.hero-video, .hero-poster) {
     visibility: hidden;
   }
 
@@ -464,38 +489,24 @@
   }
 
   /* ----------------------------------------------------------------
-     Footer card. Dark on top for reading; light rises from the bottom
-     edge behind the name, then sinks back so the fine print sits on deep
-     indigo rather than on the bright part of the glow.
+     Footer. Full bleed: dark on top for reading; light rises from the
+     bottom edge behind the name, then sinks back so the fine print sits
+     on deep indigo rather than on the bright part of the glow.
   ----------------------------------------------------------------- */
-  .footer-card {
+  .footer {
     position: relative;
     isolation: isolate;
     overflow: hidden;
-    border: 1px solid rgb(255 255 255 / 0.14);
-    border-radius: 20px;
-    background: #09090b;
-    padding: 1.75rem 1.25rem 0.75rem;
+    border-top: 1px solid rgb(255 255 255 / 0.1);
+    background: #000000;
   }
 
-  @media (min-width: 768px) {
-    .footer-card {
-      border-radius: var(--radius-panel);
-      padding: 3rem 3rem 1.25rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .footer-card {
-      padding: 3.5rem 4rem 1.5rem;
-    }
-  }
-
-  /* Anchored to the card's bottom edge at a fixed height, so the light sits behind
-     the name on a short desktop card and a tall phone card alike. The first layer
-     darkens the strip the fine print sits on. */
+  /* Anchored to the footer's bottom edge at a fixed height, so the light sits behind
+     the name whether the footer is a desktop screen or a tall phone column. The first
+     layer darkens the strip the fine print sits on. */
   .footer-glow {
     --fine: 8rem;
+    --hot-y: 70%; /* the bright spot sits behind the name, never behind the fine print */
     position: absolute;
     inset: auto 0 0;
     z-index: -1;
@@ -503,7 +514,7 @@
     pointer-events: none;
     background:
       linear-gradient(to top, rgb(9 8 34 / 0.78), rgb(9 8 34 / 0.35) var(--fine), transparent calc(var(--fine) * 1.8)),
-      radial-gradient(30% 20% at 52% 90%, rgb(248 240 255 / 0.95), rgb(221 190 255 / 0.5) 42%, transparent 80%),
+      radial-gradient(30% 16% at 52% var(--hot-y), rgb(248 240 255 / 0.85), rgb(221 190 255 / 0.45) 42%, transparent 80%),
       radial-gradient(42% 62% at 34% 80%, rgb(147 92 255), rgb(112 48 232 / 0.7) 42%, transparent 78%),
       radial-gradient(58% 66% at 88% 84%, rgb(20 110 255), rgb(29 78 216 / 0.65) 46%, transparent 80%),
       linear-gradient(to bottom, transparent, rgb(36 30 150 / 0.6) 42%, rgb(30 24 120 / 0.85));
@@ -512,6 +523,7 @@
   @media (min-width: 768px) {
     .footer-glow {
       --fine: 6rem;
+      --hot-y: 62%;
       height: 30rem;
     }
   }
@@ -519,6 +531,7 @@
   @media (min-width: 1024px) {
     .footer-glow {
       --fine: 3.5rem;
+      --hot-y: 68%;
       height: 27rem;
     }
   }

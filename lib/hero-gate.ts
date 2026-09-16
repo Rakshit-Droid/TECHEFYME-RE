@@ -4,22 +4,18 @@
  * the wordmark arrives; then the lockup travels up into the header logo and becomes
  * it; then the headline.
  *
- * The first two beats are frames from scripts/encode-hero.sh, numbered as one
- * sequence (hands first, logo film from `logoFrom`). The third is the page moving a
- * still of the last frame, because no film can know where the header logo sits.
+ * The first two beats are video clips from scripts/encode-hero.sh, keyframed densely
+ * for scrubbing and played back to back. The third is the page moving a still of the
+ * last frame, because no film can know where the header logo sits.
  */
-export type FrameSet = {
-  count: number;
-  fps: number;
-  /** First index of the logo film. Its frames are 16:9 and drawn whole, not cropped. */
-  logoFrom: number;
-  path: (i: number) => string;
-};
+export const CLIPS = {
+  desktop: { hands: "/hero/hands.0165079f.d.mp4", logo: "/hero/logo.9c56f234.d.mp4" },
+  mobile: { hands: "/hero/hands.3968266d.m.mp4", logo: "/hero/logo.d1013a90.m.mp4" },
+} as const;
 
-export const FRAMES: { desktop: FrameSet; mobile: FrameSet } = {
-  desktop: { count: 264, fps: 24, logoFrom: 174, path: (i) => `/hero/frames/d/${String(i + 1).padStart(3, "0")}.webp` },
-  mobile: { count: 132, fps: 12, logoFrom: 87, path: (i) => `/hero/frames/m/${String(i + 1).padStart(3, "0")}.webp` },
-};
+/** Clip lengths, in seconds. The logo clip is 16:9 and drawn whole, not cropped. */
+export const HANDS_SECONDS = 7.25;
+export const LOGO_SECONDS = 3.75;
 
 /** Frame 0, used as the poster so the first paint is the film's first frame. */
 export const POSTER = "/hero/poster.e145f54f.jpg";
@@ -47,27 +43,24 @@ export const NAV_MARK = { centerX: 0.54, centerY: 0.5, height: 0.6 } as const;
 export const MERGE_SECONDS = 2.0;
 export const TAIL_SECONDS = 1.2;
 
-/** Length of a frame set, in seconds: the frames, then the merge, then the headline's hold. */
-export const filmSeconds = (set: FrameSet) => (set.count - 1) / set.fps;
-export const timelineSeconds = (set: FrameSet) => filmSeconds(set) + MERGE_SECONDS + TAIL_SECONDS;
+/** Where the films end and the flight begins, and the whole scrubbed timeline. */
+export const FILM_SECONDS = HANDS_SECONDS + LOGO_SECONDS;
+export const TIMELINE_SECONDS = FILM_SECONDS + MERGE_SECONDS + TAIL_SECONDS;
 
-/**
- * Cues, in seconds along the timeline. Kept as time rather than scroll progress so
- * the two frame sets (24fps desktop, 12fps phones) cannot drift apart.
- */
+/** Cues, in seconds along the timeline. */
 export const CUES = {
   /** The hole is expanding: nav items start checking the frame behind them. */
   probeFrom: 3.98,
   /** Frame dark enough for white nav text. */
   navDark: 6.8,
   /** The hands film ends here and the logo film begins, on black. */
-  logo: 7.25,
+  logo: HANDS_SECONDS,
   /** The header logo steps aside for the one being drawn. */
   navLogoOut: 7.6,
 } as const;
 
-/** Scroll progress, 0 to 1, at which a time falls in a given frame set. */
-export const progressAt = (set: FrameSet, seconds: number) => seconds / timelineSeconds(set);
+/** Scroll progress, 0 to 1, at which a time on the timeline falls. */
+export const progressAt = (seconds: number) => seconds / TIMELINE_SECONDS;
 
 /** Cursor parallax only on desktop with a fine pointer and motion allowed. */
 export const FILM = "(min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference)";

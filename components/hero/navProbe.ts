@@ -12,7 +12,7 @@ const DARK_BELOW = 0.45;
 const LIGHT_ABOVE = 0.55;
 const EVERY_NTH_CALL = 3;
 
-type FrameSource = () => HTMLImageElement | undefined;
+type FrameSource = () => HTMLVideoElement | undefined;
 
 export function createNavProbe(getFrame: FrameSource) {
   const header = document.querySelector<HTMLElement>("[data-site-header]");
@@ -38,7 +38,9 @@ export function createNavProbe(getFrame: FrameSource) {
     if (calls++ % EVERY_NTH_CALL) return;
 
     const frame = getFrame();
-    if (!frame?.naturalWidth) return;
+    const fw = frame?.videoWidth ?? 0;
+    const fh = frame?.videoHeight ?? 0;
+    if (!frame || !fw || !fh) return;
 
     let data: Uint8ClampedArray;
     try {
@@ -52,9 +54,9 @@ export function createNavProbe(getFrame: FrameSource) {
     // The frame is drawn cover with object-position 46% 55% inside the hero viewport.
     const box = (document.querySelector(".hero-sticky") as HTMLElement | null)?.getBoundingClientRect();
     if (!box) return;
-    const scale = Math.max(box.width / frame.naturalWidth, box.height / frame.naturalHeight);
-    const rw = frame.naturalWidth * scale;
-    const rh = frame.naturalHeight * scale;
+    const scale = Math.max(box.width / fw, box.height / fh);
+    const rw = fw * scale;
+    const rh = fh * scale;
     const ox = box.left + (box.width - rw) * 0.46;
     const oy = box.top + (box.height - rh) * 0.55;
 
